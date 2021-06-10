@@ -1,2 +1,3 @@
+include ':jsonview'
 include ':app'
 rootProject.name = "JsonView"
