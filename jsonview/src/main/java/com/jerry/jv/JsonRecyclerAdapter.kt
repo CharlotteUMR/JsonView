@@ -1,5 +1,6 @@
 package com.jerry.jv
 
+import android.graphics.Paint
 import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,18 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
     }
 
     private val itemList = arrayListOf<JsonItem>()
+    private var jsonRecyclerView: JsonRecyclerView? = null
+    private val measurePaint = Paint()
+    private val strBuilder = StringBuilder()
+
+    init {
+        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                measureMaxWidth()
+            }
+        })
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JsonViewHolder =
         JsonViewHolder(JsonItemView(parent as JsonRecyclerView))
@@ -72,6 +85,40 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                 notifyDataSetChanged()
             }
         }
+    }
+
+    /**
+     * 计算所有item的最大宽度
+     */
+    private fun measureMaxWidth() {
+        jsonRecyclerView?.let {
+            var maxWidth = 0
+            measurePaint.textSize = it.textSizePx.toFloat()
+            for (jsonItem in itemList) {
+                strBuilder.clear()
+                for (i in 0 until (jsonItem.level * it.levelIndent)) {
+                    strBuilder.append(' ')
+                }
+                strBuilder.append(jsonItem.getKeyStr()).append(": 开").append(jsonItem.getValueStr())
+                    .append(",")
+                val width =
+                    measurePaint.measureText(strBuilder.toString()) + UIUtil.dp2px(it.context, 13f)
+                if (width > maxWidth) {
+                    maxWidth = width.toInt()
+                }
+            }
+            it.layoutParams.width = maxWidth
+        }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        jsonRecyclerView = recyclerView as JsonRecyclerView
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        jsonRecyclerView = null
     }
 
     /**
