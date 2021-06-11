@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
@@ -12,10 +12,13 @@
         android:id="@+id/tv_indent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="true"
         android:textColor="#00000000"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_key"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="       " />
@@ -25,6 +28,8 @@
         android:id="@+id/tv_key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="true"
+        android:maxLines="1"
         android:textColor="#000"
         android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_value"
@@ -37,6 +42,7 @@
         android:id="@+id/tv_joiner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="true"
         android:text=": "
         android:textColor="#000"
         android:textSize="12sp"
@@ -54,14 +60,12 @@
     <!-- 收起展开开关 -->
     <com.jerry.jv.JsonSwitcherView
         android:id="@+id/jsv_switcher"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="3dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="3dp"
-        android:layout_marginBottom="3dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tv_value"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/tv_value"
         app:layout_constraintStart_toEndOf="@id/tv_joiner"
         app:layout_constraintTop_toTopOf="@id/tv_value"
@@ -72,6 +76,7 @@
         android:id="@+id/tv_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="true"
         android:textColor="#000"
         android:textSize="12sp"
         app:layout_constrainedWidth="true"
@@ -79,17 +84,18 @@
         app:layout_constraintEnd_toStartOf="@id/tv_end"
         app:layout_constraintStart_toEndOf="@id/jsv_switcher"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="valueaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
+        tools:text="value" />
 
     <!-- 逗号 -->
     <TextView
         android:id="@+id/tv_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="true"
         android:text=","
         android:textColor="#000"
         android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_value"
+        app:layout_constraintBottom_toBottomOf="@id/tv_value"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_value"
         tools:ignore="HardcodedText" />

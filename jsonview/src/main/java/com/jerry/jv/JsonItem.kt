@@ -26,7 +26,7 @@ import org.json.JSONObject
  */
 internal data class JsonItem(
     val level: Int,
-    val index: Int,
+    var index: Int,
     val size: Int,
     val key: String,
     val value: Any?
@@ -36,11 +36,21 @@ internal data class JsonItem(
      */
     var expand: Boolean = true
 
+    /**
+     * 是否隐藏（被收起的时候为true）
+     */
+    var hide: Boolean = false
+
+    override fun canShow(): Boolean {
+        return hide.not()
+    }
+
     override fun getIndentLevel(): Int = level
 
     override fun getKeyStr(): String = if (key.isNotBlank()) "\"$key\"" else ""
 
-    override fun canShowSwitcher(): Boolean = value is JSONArray || value is JSONObject
+    override fun canShowSwitcher(): Boolean =
+        ((value is JSONArray) or (value is JSONObject)) and (expand.not() or (index < 0))
 
     override fun isExpand(): Boolean = expand
 
@@ -59,8 +69,8 @@ internal data class JsonItem(
 
     override fun getValueStr(): String {
         return when (value) {
-            is JSONObject -> if (expand) "{" else "Object{...}"
-            is JSONArray -> if (expand) "[" else "Array[${value.length()}]"
+            is JSONObject -> if (expand) if (index < 0) "{" else "}" else "Object{...}"
+            is JSONArray -> if (expand) if (index < 0) "[" else "]" else "Array[${value.length()}]"
             is String -> "\"$value\""
             else -> "$value"
         }

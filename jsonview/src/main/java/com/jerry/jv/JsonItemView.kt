@@ -1,9 +1,11 @@
 package com.jerry.jv
 
 import android.annotation.SuppressLint
+import android.graphics.Paint
 import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.jerry.jv.JsonItem.ValueType
 import kotlinx.android.synthetic.main.item_json_view.view.*
@@ -25,12 +27,23 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
     init {
         View.inflate(context, R.layout.item_json_view, this)
         layoutParams = RecyclerView.LayoutParams(
-            RecyclerView.LayoutParams.WRAP_CONTENT,
+            RecyclerView.LayoutParams.MATCH_PARENT,
             RecyclerView.LayoutParams.WRAP_CONTENT
         )
     }
 
     fun setViewData(viewData: IViewData) {
+        if (viewData.canShow().not()) {
+            layoutParams = RecyclerView.LayoutParams(0, 0)
+            visibility = GONE
+            return
+        }
+        layoutParams = RecyclerView.LayoutParams(
+            RecyclerView.LayoutParams.MATCH_PARENT,
+            RecyclerView.LayoutParams.WRAP_CONTENT
+        )
+        visibility = VISIBLE
+
         val textSizeFloat = container.textSizePx.toFloat()
 
         // 缩进
@@ -88,9 +101,18 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
         } else {
             tv_end.visibility = View.GONE
         }
+
+        ConstraintSet().apply{
+            clone(this@JsonItemView)
+            val lineHeight = tv_value.lineHeight
+            constrainWidth(R.id.jsv_switcher, lineHeight / 2)
+            constrainHeight(R.id.jsv_switcher, lineHeight / 2)
+            applyTo(this@JsonItemView)
+        }
     }
 
     interface IViewData {
+        fun canShow(): Boolean
         fun getIndentLevel(): Int
         fun getKeyStr(): String
         fun canShowSwitcher(): Boolean

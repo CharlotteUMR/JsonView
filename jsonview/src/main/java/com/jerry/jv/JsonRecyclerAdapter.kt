@@ -1,5 +1,6 @@
 package com.jerry.jv
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
@@ -12,6 +13,10 @@ import org.json.JSONTokener
  * @author Jerry
  */
 internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.JsonViewHolder>() {
+    companion object {
+        private const val TAG = "JsonRecyclerAdapter"
+    }
+
     private val itemList = arrayListOf<JsonItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JsonViewHolder =
@@ -20,10 +25,54 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
     override fun getItemCount(): Int = itemList.size
 
     override fun onBindViewHolder(holder: JsonViewHolder, position: Int) {
-        holder.jsonItemView.setViewData(itemList[position])
+        val curItem = itemList[position]
+        holder.jsonItemView.setViewData(curItem)
+        holder.jsonItemView.setOnClickListener {
+            if (curItem.canShowSwitcher()) {
+                // 如果可以展示开关
+                if (curItem.expand) {
+                    // 如果之前是展开的则收起
+                    // 将这个item下的所有item都隐藏
+                    var i = position + 1
+                    while (itemList[i].value != curItem.value) {
+                        itemList[i].hide = true
+                        i++
+                    }
+                    // 将这个item的结尾隐藏
+                    itemList[i].hide = true
+                    // 将这个item的开头变为收起态（这里保留开头的原因是结尾没有key）
+                    curItem.index = itemList[i].index
+                    curItem.expand = false
+                } else {
+                    // 如果之前是收起的则展开
+                    // 将这个item下所有未收起的item都显示
+                    var i = position + 1
+                    var keepHideValue: Any? = null
+                    while (itemList[i].value != curItem.value) {
+                        val item = itemList[i]
+                        if (keepHideValue == null) {
+                            if (item.canShowSwitcher() && item.expand.not()) {
+                                // 如果item有开关且处于收起状态，则其下所有item保持隐藏
+                                keepHideValue = item.value
+                            }
+                            item.hide = false
+                        } else if (item.value == keepHideValue) {
+                            // 保持隐藏结束
+                            keepHideValue = null
+                        }
+                        i++
+                    }
+                    // 将这个item的结尾显示
+                    itemList[i].hide = false
+                    // 将这个item的开头变为展开态
+                    curItem.index = -1
+                    curItem.expand = true
+                }
+                // 刷新
+                notifyDataSetChanged()
+            }
+        }
     }
-
-    class JsonViewHolder(val jsonItemView: JsonItemView) : RecyclerView.ViewHolder(jsonItemView)
 
     /**
      * 填充数据源
@@ -47,22 +96,38 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+            else -> Log.e(TAG, "setData: invalid data type")
         }
 
         // 刷新
         notifyDataSetChanged()
     }
 
-    private fun handleData(data: Any?, key: String, level: Int, index: Int = 0, size: Int) {
-        when (data) {
-            is JSONArray -> handleJsonArray(data, key, level, index, size)
-            is JSONObject -> handleJsonObject(data, key, level, index, size)
-            else -> handleOther(data, key, level, index, size)
+    /**
+     * 将数据处理为item
+     *
+     * @param value jsonValue
+     * @param key jsonKey
+     * @param level item所在的层级（处理缩进）
+     * @param index item在所在层级的次序
+     * @param size item所在层级的项的总数
+     */
+    private fun handleData(value: Any?, key: String, level: Int, index: Int = 0, size: Int) {
+        when (value) {
+            is JSONArray -> handleJsonArray(value, key, level, index, size)
+            is JSONObject -> handleJsonObject(value, key, level, index, size)
+            else -> handleOther(value, key, level, index, size)
         }
     }
 
     /**
      * 处理JsonArray
+     *
+     * @param jsonArray jsonValue
+     * @param key jsonKey
+     * @param level item所在的层级（处理缩进）
+     * @param index item在所在层级的次序
+     * @param size item所在层级的项的总数
      */
     private fun handleJsonArray(
         jsonArray: JSONArray,
@@ -71,16 +136,25 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
         index: Int = 0,
         size: Int = 1
     ) {
+        // jsonArray开始
         itemList.add(JsonItem(level, -1, size, key, jsonArray))
         val arraySize = jsonArray.length()
         for (i in 0 until arraySize) {
+            // 处理每一项
             handleData(jsonArray.opt(i), "", level + 1, i, arraySize)
         }
-        itemList.add(JsonItem(level, index, size, "", "]"))
+        // jsonArray结束
+        itemList.add(JsonItem(level, index, size, "", jsonArray))
     }
 
     /**
      * 处理JsonObject
+     *
+     * @param jsonObject jsonValue
+     * @param key jsonKey
+     * @param level item所在的层级（处理缩进）
+     * @param index item在所在层级的次序
+     * @param size item所在层级的项的总数
      */
     private fun handleJsonObject(
         jsonObject: JSONObject,
@@ -89,26 +163,37 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
         index: Int = 0,
         size: Int = 1
     ) {
+        // jsonObject开始
         itemList.add(JsonItem(level, -1, size, key, jsonObject))
         var i = 0
         val jsonSize = jsonObject.length()
         jsonObject.keys().forEach {
+            // 处理每个键值对
             handleData(jsonObject[it], it, level + 1, i, jsonSize)
             i++
         }
-        itemList.add(JsonItem(level, index, size, "", "}"))
+        // jsonObject结束
+        itemList.add(JsonItem(level, index, size, "", jsonObject))
     }
 
     /**
      * 处理除了JsonObject和JsonArray之外的
+     *
+     * @param value jsonValue
+     * @param key jsonKey
+     * @param level item所在的层级（处理缩进）
+     * @param index item在所在层级的次序
+     * @param size item所在层级的项的总数
      */
     private fun handleOther(
-        data: Any?,
+        value: Any?,
         key: String = "",
         level: Int = 0,
         index: Int = 0,
         size: Int = 1
     ) {
-        itemList.add(JsonItem(level, index, size, key, data))
+        itemList.add(JsonItem(level, index, size, key, value))
     }
+
+    class JsonViewHolder(val jsonItemView: JsonItemView) : RecyclerView.ViewHolder(jsonItemView)
 }

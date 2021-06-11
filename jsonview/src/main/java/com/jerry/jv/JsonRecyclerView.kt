@@ -29,7 +29,7 @@ class JsonRecyclerView : RecyclerView {
     /**
      * 控制整体文本大小
      */
-    var textSizePx: Int = 20
+    var textSizePx: Int = 50
         set(value) {
             field = value
             adapter.notifyDataSetChanged()
