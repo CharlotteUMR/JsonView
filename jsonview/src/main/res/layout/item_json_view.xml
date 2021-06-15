@@ -81,22 +81,8 @@
         android:textSize="12sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_end"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/jsv_switcher"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="value" />
-
-    <!-- 逗号 -->
-    <TextView
-        android:id="@+id/tv_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:includeFontPadding="true"
-        android:text=","
-        android:textColor="#000"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_value"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_value"
-        tools:ignore="HardcodedText" />
 </merge>

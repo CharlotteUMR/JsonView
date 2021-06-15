@@ -2,15 +2,14 @@ package com.jerry.jsonview
 
 import android.app.Activity
 import android.os.Bundle
-import com.jerry.jv.JsonRecyclerView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val jsonRecyclerView = findViewById<JsonRecyclerView>(R.id.jv_test)
-        jsonRecyclerView.setData(
+        jv_test.setData(
             "{\n" +
                     "    \"string\":\"string\",\n" +
                     "    \"number\":100,\n" +

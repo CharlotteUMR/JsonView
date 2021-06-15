@@ -76,6 +76,14 @@ internal data class JsonItem(
         }
     }
 
+    override fun getChildCount(): Int {
+        return when (value) {
+            is JSONObject -> value.length()
+            is JSONArray -> value.length()
+            else -> 0
+        }
+    }
+
     override fun canShowEnd(): Boolean = (index >= 0) and (index < size - 1)
 
     /**

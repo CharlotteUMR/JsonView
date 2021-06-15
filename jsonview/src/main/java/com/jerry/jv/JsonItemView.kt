@@ -1,11 +1,14 @@
 package com.jerry.jv
 
 import android.annotation.SuppressLint
-import android.graphics.Paint
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.text.color
 import androidx.recyclerview.widget.RecyclerView
 import com.jerry.jv.JsonItem.ValueType
 import kotlinx.android.synthetic.main.item_json_view.view.*
@@ -23,6 +26,7 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
     }
 
     private val strBuilder = StringBuilder()
+    private val spannableStrBuilder = SpannableStringBuilder()
 
     init {
         View.inflate(context, R.layout.item_json_view, this)
@@ -81,28 +85,33 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
 
         // value
         tv_value.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
-        tv_value.setTextColor(
-            when (viewData.getValueType()) {
-                ValueType.TYPE_JSON_ARRAY, ValueType.TYPE_JSON_OBJECT -> container.defaultTextColorInt
-                ValueType.TYPE_STRING -> container.stringTextColorInt
-                ValueType.TYPE_URL -> container.urlTextColorInt
-                ValueType.TYPE_NUMBER -> container.numberTextColorInt
-                ValueType.TYPE_BOOLEAN -> container.booleanTextColorInt
-                else -> container.errorTextColorInt
-            }
-        )
-        tv_value.text = viewData.getValueStr()
-
-        // 逗号
-        if (viewData.canShowEnd()) {
-            tv_end.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
-            tv_end.setTextColor(container.defaultTextColorInt)
-            tv_end.visibility = View.VISIBLE
-        } else {
-            tv_end.visibility = View.GONE
+        val valueTextColor = when (viewData.getValueType()) {
+            ValueType.TYPE_JSON_ARRAY, ValueType.TYPE_JSON_OBJECT -> container.defaultTextColorInt
+            ValueType.TYPE_STRING -> container.stringTextColorInt
+            ValueType.TYPE_URL -> container.urlTextColorInt
+            ValueType.TYPE_NUMBER -> container.numberTextColorInt
+            ValueType.TYPE_BOOLEAN -> container.booleanTextColorInt
+            else -> container.errorTextColorInt
         }
+        spannableStrBuilder.clear()
+        spannableStrBuilder.color(valueTextColor) { append(viewData.getValueStr()) }
+        if (viewData.isExpand().not() && viewData.getValueType() == ValueType.TYPE_JSON_ARRAY) {
+            val childCountStr = viewData.getChildCount().toString()
+            val lastIndexOf = viewData.getValueStr().lastIndexOf(childCountStr)
+            spannableStrBuilder.setSpan(
+                ForegroundColorSpan(container.numberTextColorInt),
+                lastIndexOf,
+                lastIndexOf + childCountStr.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        if (viewData.canShowEnd()) {
+            // 增加逗号
+            spannableStrBuilder.color(container.defaultTextColorInt) { append(",") }
+        }
+        tv_value.text = spannableStrBuilder
 
-        ConstraintSet().apply{
+        ConstraintSet().apply {
             clone(this@JsonItemView)
             val lineHeight = tv_value.lineHeight
             constrainWidth(R.id.jsv_switcher, lineHeight / 2)
@@ -121,6 +130,7 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
         @ValueType
         fun getValueType(): Int
         fun getValueStr(): String
+        fun getChildCount(): Int
         fun canShowEnd(): Boolean
     }
 }

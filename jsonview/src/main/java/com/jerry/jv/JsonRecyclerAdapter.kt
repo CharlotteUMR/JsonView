@@ -27,7 +27,11 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
         registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                measureMaxWidth()
+                if (jsonRecyclerView?.layoutParams?.width == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                    measureMinWidth()
+                } else {
+                    jsonRecyclerView?.minimumWidth = 0
+                }
             }
         })
     }
@@ -88,11 +92,11 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
     }
 
     /**
-     * 计算所有item的最大宽度
+     * 计算RecyclerView的最小宽度（相当于所有item的最大宽度）
      */
-    private fun measureMaxWidth() {
+    private fun measureMinWidth() {
         jsonRecyclerView?.let {
-            var maxWidth = 0
+            var itemMaxWidth = 0
             measurePaint.textSize = it.textSizePx.toFloat()
             for (jsonItem in itemList) {
                 strBuilder.clear()
@@ -103,11 +107,11 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                     .append(",")
                 val width =
                     measurePaint.measureText(strBuilder.toString()) + UIUtil.dp2px(it.context, 13f)
-                if (width > maxWidth) {
-                    maxWidth = width.toInt()
+                if (width > itemMaxWidth) {
+                    itemMaxWidth = width.toInt()
                 }
             }
-            it.layoutParams.width = maxWidth
+            it.minimumWidth = itemMaxWidth
         }
     }
 
