@@ -2,6 +2,7 @@ package com.jerry.jsonview
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.jerry.jv.JsonRecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -78,6 +79,11 @@ class MainActivity : Activity() {
         cb_ignore_case.setOnCheckedChangeListener { _, isChecked ->
             jv_test.searchParam =
                 JsonRecyclerView.SearchParam(et_search_key.text.toString(), isChecked)
+        }
+        jv_test.onUrlClickListener = object : JsonRecyclerView.OnUrlClickListener {
+            override fun onUrlClick(url: String) {
+                Toast.makeText(this@MainActivity, url, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

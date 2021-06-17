@@ -3,8 +3,11 @@ package com.jerry.jv
 import android.annotation.SuppressLint
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
 import android.text.style.BackgroundColorSpan
 import android.text.style.CharacterStyle
+import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
@@ -114,6 +117,24 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
                 ignoreCase,
                 BackgroundColorSpan(container.highlightBgColorInt)
             )
+        }
+        if (viewData.getValueType() == ValueType.TYPE_URL) {
+            tv_value.movementMethod = LinkMovementMethod.getInstance()
+            // 给url加上点击
+            spanStrBuilder.setSpan(object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    container.onUrlClickListener?.onUrlClick(
+                        viewData.getValueStr().replace("\"", "")
+                    )
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    // 只加下划线
+                    ds.isUnderlineText = true
+                }
+            }, 1, spanStrBuilder.length - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        } else {
+            tv_value.movementMethod = null
         }
 
         if (viewData.isExpand().not() && viewData.getValueType() == ValueType.TYPE_JSON_ARRAY) {

@@ -113,6 +113,7 @@ class JsonRecyclerView : RecyclerView {
         }
 
     private val adapter = JsonRecyclerAdapter()
+    var onUrlClickListener: OnUrlClickListener? = null
 
     init {
         layoutManager = LinearLayoutManager(context)
@@ -136,4 +137,16 @@ class JsonRecyclerView : RecyclerView {
      * [ignoreCase] 是否忽略大小写
      */
     class SearchParam(val searchKey: String, val ignoreCase: Boolean = false)
+
+    /**
+     * url点击事件监听
+     */
+    interface OnUrlClickListener {
+        /**
+         * 点击url的回调
+         *
+         * @param url 点击的url
+         */
+        fun onUrlClick(url: String)
+    }
 }
