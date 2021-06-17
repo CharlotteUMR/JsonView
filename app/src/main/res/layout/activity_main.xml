@@ -8,6 +8,7 @@
 
     <com.jerry.jv.JsonRecyclerView
         android:id="@+id/jv_test"
+        style="@style/JRV"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/et_search_key"

@@ -119,6 +119,7 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
             )
         }
         if (viewData.getValueType() == ValueType.TYPE_URL) {
+            // 解决ClickableSpan无效的问题
             tv_value.movementMethod = LinkMovementMethod.getInstance()
             // 给url加上点击
             spanStrBuilder.setSpan(object : ClickableSpan() {

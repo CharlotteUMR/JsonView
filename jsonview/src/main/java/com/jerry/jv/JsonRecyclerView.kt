@@ -18,16 +18,18 @@ class JsonRecyclerView : RecyclerView {
         private const val TAG = "JsonView"
     }
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
-    )
+    ) {
+        initAttrs(context, attrs, defStyleAttr)
+    }
 
     /**
-     * 控制整体文本大小
+     * 控制整体文字大小
      */
     var textSizePx: Int = 50
         set(value) {
@@ -45,7 +47,7 @@ class JsonRecyclerView : RecyclerView {
         }
 
     /**
-     * 各种文本颜色
+     * 默认文字颜色
      */
     @ColorInt
     var defaultTextColorInt: Int = 0xFF333333.toInt()
@@ -54,6 +56,9 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    /**
+     * jsonKey文字颜色
+     */
     @ColorInt
     var keyTextColorInt: Int = 0xFF92278F.toInt()
         set(value) {
@@ -61,6 +66,9 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    /**
+     * jsonValue如果为String时文字颜色
+     */
     @ColorInt
     var stringTextColorInt: Int = 0xFF3AB54A.toInt()
         set(value) {
@@ -68,6 +76,9 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    /**
+     * jsonValue如果为Url时文字颜色
+     */
     @ColorInt
     var urlTextColorInt: Int = 0xFF61D2D6.toInt()
         set(value) {
@@ -75,6 +86,9 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    /**
+     * jsonValue如果为数字时文字颜色
+     */
     @ColorInt
     var numberTextColorInt: Int = 0xFF25AAE2.toInt()
         set(value) {
@@ -82,6 +96,9 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    /**
+     * jsonValue如果为Boolean时文字颜色
+     */
     @ColorInt
     var booleanTextColorInt: Int = 0xFFF98280.toInt()
         set(value) {
@@ -89,6 +106,9 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    /**
+     * jsonValue如果为异常情况时文字颜色
+     */
     @ColorInt
     var errorTextColorInt: Int = 0xFFF1592A.toInt()
         set(value) {
@@ -96,6 +116,9 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    /**
+     * 搜索高亮背景色
+     */
     @ColorInt
     var highlightBgColorInt: Int = 0xFFFFFF00.toInt()
         set(value) {
@@ -118,6 +141,46 @@ class JsonRecyclerView : RecyclerView {
     init {
         layoutManager = LinearLayoutManager(context)
         setAdapter(adapter)
+    }
+
+    /**
+     * 初始化属性
+     */
+    private fun initAttrs(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
+        val typedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.JsonRecyclerView)
+        textSizePx =
+            typedArray.getDimensionPixelSize(R.styleable.JsonRecyclerView_jrv_text_size, textSizePx)
+        levelIndent = typedArray.getInt(R.styleable.JsonRecyclerView_jrv_level_indent, levelIndent)
+        defaultTextColorInt = typedArray.getColor(
+            R.styleable.JsonRecyclerView_jrv_default_text_color,
+            defaultTextColorInt
+        )
+        keyTextColorInt =
+            typedArray.getColor(R.styleable.JsonRecyclerView_jrv_key_text_color, keyTextColorInt)
+        stringTextColorInt = typedArray.getColor(
+            R.styleable.JsonRecyclerView_jrv_string_text_color,
+            stringTextColorInt
+        )
+        urlTextColorInt =
+            typedArray.getColor(R.styleable.JsonRecyclerView_jrv_url_text_color, urlTextColorInt)
+        numberTextColorInt = typedArray.getColor(
+            R.styleable.JsonRecyclerView_jrv_number_text_color,
+            numberTextColorInt
+        )
+        booleanTextColorInt = typedArray.getColor(
+            R.styleable.JsonRecyclerView_jrv_boolean_text_color,
+            booleanTextColorInt
+        )
+        errorTextColorInt = typedArray.getColor(
+            R.styleable.JsonRecyclerView_jrv_error_text_color,
+            errorTextColorInt
+        )
+        highlightBgColorInt = typedArray.getColor(
+            R.styleable.JsonRecyclerView_jrv_highlight_bg_color,
+            highlightBgColorInt
+        )
+        typedArray.recycle()
     }
 
     /**
