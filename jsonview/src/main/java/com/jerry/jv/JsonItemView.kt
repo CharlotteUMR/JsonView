@@ -3,6 +3,8 @@ package com.jerry.jv
 import android.annotation.SuppressLint
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.BackgroundColorSpan
+import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
@@ -26,7 +28,7 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
     }
 
     private val strBuilder = StringBuilder()
-    private val spannableStrBuilder = SpannableStringBuilder()
+    private val spanStrBuilder = SpannableStringBuilder()
 
     init {
         View.inflate(context, R.layout.item_json_view, this)
@@ -49,6 +51,9 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
         visibility = VISIBLE
 
         val textSizeFloat = container.textSizePx.toFloat()
+        val searchKey =
+            container.searchParam?.searchKey?.let { if (it.isNotBlank()) it else null }
+        val ignoreCase = container.searchParam?.ignoreCase ?: false
 
         // 缩进
         tv_indent.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
@@ -59,10 +64,17 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
         tv_indent.text = strBuilder.toString()
 
         // key
+        spanStrBuilder.clear()
         if (viewData.getKeyStr().isNotBlank()) {
             tv_key.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
             tv_key.setTextColor(container.keyTextColorInt)
-            tv_key.text = viewData.getKeyStr()
+            findAndSpanStr(
+                spanStrBuilder.append(viewData.getKeyStr()),
+                searchKey,
+                ignoreCase,
+                BackgroundColorSpan(container.highlightBgColorInt)
+            )
+            tv_key.text = spanStrBuilder
             // 冒号
             tv_joiner.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
             tv_joiner.setTextColor(container.defaultTextColorInt)
@@ -93,23 +105,33 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
             ValueType.TYPE_BOOLEAN -> container.booleanTextColorInt
             else -> container.errorTextColorInt
         }
-        spannableStrBuilder.clear()
-        spannableStrBuilder.color(valueTextColor) { append(viewData.getValueStr()) }
-        if (viewData.isExpand().not() && viewData.getValueType() == ValueType.TYPE_JSON_ARRAY) {
-            val childCountStr = viewData.getChildCount().toString()
-            val lastIndexOf = viewData.getValueStr().lastIndexOf(childCountStr)
-            spannableStrBuilder.setSpan(
-                ForegroundColorSpan(container.numberTextColorInt),
-                lastIndexOf,
-                lastIndexOf + childCountStr.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        spanStrBuilder.clear()
+        spanStrBuilder.color(valueTextColor) {
+            append(viewData.getValueStr())
+            findAndSpanStr(
+                this,
+                searchKey,
+                ignoreCase,
+                BackgroundColorSpan(container.highlightBgColorInt)
             )
         }
+
+        if (viewData.isExpand().not() && viewData.getValueType() == ValueType.TYPE_JSON_ARRAY) {
+            // 如果是JsonArray并且收起，则数字高亮
+            val childCountStr = viewData.getChildCount().toString()
+            findAndSpanStr(
+                spanStrBuilder,
+                childCountStr,
+                ignoreCase,
+                ForegroundColorSpan(container.numberTextColorInt)
+            )
+        }
+
         if (viewData.canShowEnd()) {
             // 增加逗号
-            spannableStrBuilder.color(container.defaultTextColorInt) { append(",") }
+            spanStrBuilder.color(container.defaultTextColorInt) { append(",") }
         }
-        tv_value.text = spannableStrBuilder
+        tv_value.text = spanStrBuilder
 
         ConstraintSet().apply {
             clone(this@JsonItemView)
@@ -117,6 +139,34 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
             constrainWidth(R.id.jsv_switcher, lineHeight / 2)
             constrainHeight(R.id.jsv_switcher, lineHeight / 2)
             applyTo(this@JsonItemView)
+        }
+    }
+
+    /**
+     * 在[source]中查找[key]并设置[span]
+     *
+     * @param source 源数据
+     * @param key 要查找的文本
+     * @param span 要给查找到文本设置的效果
+     *
+     * @return 设置效果后的文本
+     */
+    private fun findAndSpanStr(
+        source: SpannableStringBuilder,
+        key: String? = null,
+        ignoreCase: Boolean = false,
+        span: CharacterStyle
+    ) {
+        key ?: return
+        var startIndex = source.indexOf(string = key, ignoreCase = ignoreCase)
+        while (startIndex >= 0) {
+            source.setSpan(
+                CharacterStyle.wrap(span),
+                startIndex,
+                startIndex.plus(key.length),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            startIndex = source.indexOf(key, startIndex + 1, ignoreCase)
         }
     }
 

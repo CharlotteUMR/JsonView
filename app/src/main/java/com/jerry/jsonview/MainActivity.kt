@@ -2,6 +2,8 @@ package com.jerry.jsonview
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.core.widget.addTextChangedListener
+import com.jerry.jv.JsonRecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -69,5 +71,13 @@ class MainActivity : Activity() {
                     "    ]\n" +
                     "}"
         )
+        et_search_key.addTextChangedListener {
+            jv_test.searchParam =
+                JsonRecyclerView.SearchParam(it.toString(), cb_ignore_case.isChecked)
+        }
+        cb_ignore_case.setOnCheckedChangeListener { _, isChecked ->
+            jv_test.searchParam =
+                JsonRecyclerView.SearchParam(et_search_key.text.toString(), isChecked)
+        }
     }
 }

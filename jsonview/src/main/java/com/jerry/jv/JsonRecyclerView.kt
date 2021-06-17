@@ -96,6 +96,22 @@ class JsonRecyclerView : RecyclerView {
             adapter.notifyDataSetChanged()
         }
 
+    @ColorInt
+    var highlightBgColorInt: Int = 0xFFFFFF00.toInt()
+        set(value) {
+            field = value
+            adapter.notifyDataSetChanged()
+        }
+
+    /**
+     * 搜索参数
+     */
+    var searchParam: SearchParam? = null
+        set(value) {
+            field = value
+            adapter.notifyDataSetChanged()
+        }
+
     private val adapter = JsonRecyclerAdapter()
 
     init {
@@ -111,4 +127,13 @@ class JsonRecyclerView : RecyclerView {
     fun setData(data: Any?) {
         adapter.setData(data)
     }
+
+    /**
+     * 搜索参数
+     *
+     * [searchKey] 搜索关键词
+     *
+     * [ignoreCase] 是否忽略大小写
+     */
+    class SearchParam(val searchKey: String, val ignoreCase: Boolean = false)
 }
