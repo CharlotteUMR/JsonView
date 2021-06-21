@@ -1,9 +1,14 @@
-package com.jerry.jv
+package com.jerry.jv.viewmodel
 
 import android.graphics.Paint
 import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.jerry.jv.model.JsonItem
+import com.jerry.jv.JsonView
+import com.jerry.jv.util.UIUtil
+import com.jerry.jv.view.JsonItemView
+import com.jerry.jv.view.JsonRecyclerView
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -27,17 +32,13 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
         registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                if (jsonRecyclerView?.layoutParams?.width == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                    measureMinWidth()
-                } else {
-                    jsonRecyclerView?.minimumWidth = 0
-                }
+                measureMinWidth()
             }
         })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JsonViewHolder =
-        JsonViewHolder(JsonItemView(parent as JsonRecyclerView))
+        JsonViewHolder(JsonItemView(parent.parent.parent as JsonView))
 
     override fun getItemCount(): Int = itemList.size
 
@@ -97,10 +98,11 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
     private fun measureMinWidth() {
         jsonRecyclerView?.let {
             var itemMaxWidth = 0
-            measurePaint.textSize = it.textSizePx.toFloat()
+            val jsonView = it.parent.parent as JsonView
+            measurePaint.textSize = jsonView.textSizePx.toFloat()
             for (jsonItem in itemList) {
                 strBuilder.clear()
-                for (i in 0 until (jsonItem.level * it.levelIndent)) {
+                for (i in 0 until (jsonItem.level * jsonView.levelIndent)) {
                     strBuilder.append(' ')
                 }
                 strBuilder.append(jsonItem.getKeyStr()).append(": 开").append(jsonItem.getValueStr())

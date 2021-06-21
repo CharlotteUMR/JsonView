@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="JsonRecyclerView">
+    <declare-styleable name="JsonView">
         <!-- 整体文字大小 -->
         <attr name="jrv_text_size" format="dimension" />
         <!-- 层级缩进 -->

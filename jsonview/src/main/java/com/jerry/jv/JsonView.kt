@@ -2,18 +2,19 @@ package com.jerry.jv
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.ColorInt
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.constraintlayout.widget.ConstraintLayout
+import kotlinx.android.synthetic.main.layout_json_view.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * 用于展示Json的View
+ * 用于展示json的控件
  *
  * @author Jerry
  */
-class JsonRecyclerView : RecyclerView {
+class JsonView : ConstraintLayout {
     companion object {
         private const val TAG = "JsonView"
     }
@@ -34,7 +35,7 @@ class JsonRecyclerView : RecyclerView {
     var textSizePx: Int = 50
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -43,7 +44,7 @@ class JsonRecyclerView : RecyclerView {
     var levelIndent: Int = 4
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -53,7 +54,7 @@ class JsonRecyclerView : RecyclerView {
     var defaultTextColorInt: Int = 0xFF333333.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -63,7 +64,7 @@ class JsonRecyclerView : RecyclerView {
     var keyTextColorInt: Int = 0xFF92278F.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -73,7 +74,7 @@ class JsonRecyclerView : RecyclerView {
     var stringTextColorInt: Int = 0xFF3AB54A.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -83,7 +84,7 @@ class JsonRecyclerView : RecyclerView {
     var urlTextColorInt: Int = 0xFF61D2D6.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -93,7 +94,7 @@ class JsonRecyclerView : RecyclerView {
     var numberTextColorInt: Int = 0xFF25AAE2.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -103,7 +104,7 @@ class JsonRecyclerView : RecyclerView {
     var booleanTextColorInt: Int = 0xFFF98280.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -113,7 +114,7 @@ class JsonRecyclerView : RecyclerView {
     var errorTextColorInt: Int = 0xFFF1592A.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -123,7 +124,7 @@ class JsonRecyclerView : RecyclerView {
     var highlightBgColorInt: Int = 0xFFFFFF00.toInt()
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
     /**
@@ -132,56 +133,10 @@ class JsonRecyclerView : RecyclerView {
     var searchParam: SearchParam? = null
         set(value) {
             field = value
-            adapter.notifyDataSetChanged()
+            jrv_interface.notifyDataSetChanged()
         }
 
-    private val adapter = JsonRecyclerAdapter()
     var onUrlClickListener: OnUrlClickListener? = null
-
-    init {
-        layoutManager = LinearLayoutManager(context)
-        setAdapter(adapter)
-    }
-
-    /**
-     * 初始化属性
-     */
-    private fun initAttrs(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
-        val typedArray =
-            context.obtainStyledAttributes(attrs, R.styleable.JsonRecyclerView)
-        textSizePx =
-            typedArray.getDimensionPixelSize(R.styleable.JsonRecyclerView_jrv_text_size, textSizePx)
-        levelIndent = typedArray.getInt(R.styleable.JsonRecyclerView_jrv_level_indent, levelIndent)
-        defaultTextColorInt = typedArray.getColor(
-            R.styleable.JsonRecyclerView_jrv_default_text_color,
-            defaultTextColorInt
-        )
-        keyTextColorInt =
-            typedArray.getColor(R.styleable.JsonRecyclerView_jrv_key_text_color, keyTextColorInt)
-        stringTextColorInt = typedArray.getColor(
-            R.styleable.JsonRecyclerView_jrv_string_text_color,
-            stringTextColorInt
-        )
-        urlTextColorInt =
-            typedArray.getColor(R.styleable.JsonRecyclerView_jrv_url_text_color, urlTextColorInt)
-        numberTextColorInt = typedArray.getColor(
-            R.styleable.JsonRecyclerView_jrv_number_text_color,
-            numberTextColorInt
-        )
-        booleanTextColorInt = typedArray.getColor(
-            R.styleable.JsonRecyclerView_jrv_boolean_text_color,
-            booleanTextColorInt
-        )
-        errorTextColorInt = typedArray.getColor(
-            R.styleable.JsonRecyclerView_jrv_error_text_color,
-            errorTextColorInt
-        )
-        highlightBgColorInt = typedArray.getColor(
-            R.styleable.JsonRecyclerView_jrv_highlight_bg_color,
-            highlightBgColorInt
-        )
-        typedArray.recycle()
-    }
 
     /**
      * 填充数据源
@@ -189,7 +144,52 @@ class JsonRecyclerView : RecyclerView {
      * [JSONObject]或[JSONArray]或[String]类型
      */
     fun setData(data: Any?) {
-        adapter.setData(data)
+        jrv_interface.setData(data)
+    }
+
+    init {
+        View.inflate(context, R.layout.layout_json_view, this)
+        jrv_interface.root = this
+    }
+
+    /**
+     * 初始化属性
+     */
+    private fun initAttrs(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
+        val typedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.JsonView)
+        textSizePx =
+            typedArray.getDimensionPixelSize(R.styleable.JsonView_jrv_text_size, textSizePx)
+        levelIndent = typedArray.getInt(R.styleable.JsonView_jrv_level_indent, levelIndent)
+        defaultTextColorInt = typedArray.getColor(
+            R.styleable.JsonView_jrv_default_text_color,
+            defaultTextColorInt
+        )
+        keyTextColorInt =
+            typedArray.getColor(R.styleable.JsonView_jrv_key_text_color, keyTextColorInt)
+        stringTextColorInt = typedArray.getColor(
+            R.styleable.JsonView_jrv_string_text_color,
+            stringTextColorInt
+        )
+        urlTextColorInt =
+            typedArray.getColor(R.styleable.JsonView_jrv_url_text_color, urlTextColorInt)
+        numberTextColorInt = typedArray.getColor(
+            R.styleable.JsonView_jrv_number_text_color,
+            numberTextColorInt
+        )
+        booleanTextColorInt = typedArray.getColor(
+            R.styleable.JsonView_jrv_boolean_text_color,
+            booleanTextColorInt
+        )
+        errorTextColorInt = typedArray.getColor(
+            R.styleable.JsonView_jrv_error_text_color,
+            errorTextColorInt
+        )
+        highlightBgColorInt = typedArray.getColor(
+            R.styleable.JsonView_jrv_highlight_bg_color,
+            highlightBgColorInt
+        )
+        typedArray.recycle()
     }
 
     /**

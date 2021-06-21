@@ -1,13 +1,15 @@
-package com.jerry.jv
+package com.jerry.jv.model
 
 import androidx.annotation.IntDef
-import com.jerry.jv.JsonItem.ValueType.Companion.TYPE_BOOLEAN
-import com.jerry.jv.JsonItem.ValueType.Companion.TYPE_JSON_ARRAY
-import com.jerry.jv.JsonItem.ValueType.Companion.TYPE_JSON_OBJECT
-import com.jerry.jv.JsonItem.ValueType.Companion.TYPE_NUMBER
-import com.jerry.jv.JsonItem.ValueType.Companion.TYPE_STRING
-import com.jerry.jv.JsonItem.ValueType.Companion.TYPE_UNKNOWN
-import com.jerry.jv.JsonItem.ValueType.Companion.TYPE_URL
+import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_BOOLEAN
+import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_ARRAY
+import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_OBJECT
+import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_NUMBER
+import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_STRING
+import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_UNKNOWN
+import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_URL
+import com.jerry.jv.util.UrlUtil
+import com.jerry.jv.view.JsonItemView
 import org.json.JSONArray
 import org.json.JSONObject
 

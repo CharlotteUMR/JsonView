@@ -1,4 +1,4 @@
-package com.jerry.jv
+package com.jerry.jv.view
 
 import android.annotation.SuppressLint
 import android.text.SpannableStringBuilder
@@ -15,7 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.text.color
 import androidx.recyclerview.widget.RecyclerView
-import com.jerry.jv.JsonItem.ValueType
+import com.jerry.jv.model.JsonItem.ValueType
+import com.jerry.jv.JsonView
+import com.jerry.jv.R
 import kotlinx.android.synthetic.main.item_json_view.view.*
 
 /**
@@ -24,8 +26,8 @@ import kotlinx.android.synthetic.main.item_json_view.view.*
  * @author Jerry
  */
 @SuppressLint("ViewConstructor")
-internal class JsonItemView(private val container: JsonRecyclerView) :
-    ConstraintLayout(container.context) {
+internal class JsonItemView(private val root: JsonView) :
+    ConstraintLayout(root.context) {
     companion object {
         private const val TAG = "JsonItemView"
     }
@@ -53,15 +55,15 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
         )
         visibility = VISIBLE
 
-        val textSizeFloat = container.textSizePx.toFloat()
+        val textSizeFloat = root.textSizePx.toFloat()
         val searchKey =
-            container.searchParam?.searchKey?.let { if (it.isNotBlank()) it else null }
-        val ignoreCase = container.searchParam?.ignoreCase ?: false
+            root.searchParam?.searchKey?.let { if (it.isNotBlank()) it else null }
+        val ignoreCase = root.searchParam?.ignoreCase ?: false
 
         // 缩进
         tv_indent.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
         strBuilder.clear()
-        for (i in 0 until viewData.getIndentLevel().times(container.levelIndent)) {
+        for (i in 0 until viewData.getIndentLevel().times(root.levelIndent)) {
             strBuilder.append(' ')
         }
         tv_indent.text = strBuilder.toString()
@@ -70,17 +72,17 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
         spanStrBuilder.clear()
         if (viewData.getKeyStr().isNotBlank()) {
             tv_key.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
-            tv_key.setTextColor(container.keyTextColorInt)
+            tv_key.setTextColor(root.keyTextColorInt)
             findAndSpanStr(
                 spanStrBuilder.append(viewData.getKeyStr()),
                 searchKey,
                 ignoreCase,
-                BackgroundColorSpan(container.highlightBgColorInt)
+                BackgroundColorSpan(root.highlightBgColorInt)
             )
             tv_key.text = spanStrBuilder
             // 冒号
             tv_joiner.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
-            tv_joiner.setTextColor(container.defaultTextColorInt)
+            tv_joiner.setTextColor(root.defaultTextColorInt)
             group_key.visibility = View.VISIBLE
         } else {
             group_key.visibility = View.GONE
@@ -101,12 +103,12 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
         // value
         tv_value.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeFloat)
         val valueTextColor = when (viewData.getValueType()) {
-            ValueType.TYPE_JSON_ARRAY, ValueType.TYPE_JSON_OBJECT -> container.defaultTextColorInt
-            ValueType.TYPE_STRING -> container.stringTextColorInt
-            ValueType.TYPE_URL -> container.urlTextColorInt
-            ValueType.TYPE_NUMBER -> container.numberTextColorInt
-            ValueType.TYPE_BOOLEAN -> container.booleanTextColorInt
-            else -> container.errorTextColorInt
+            ValueType.TYPE_JSON_ARRAY, ValueType.TYPE_JSON_OBJECT -> root.defaultTextColorInt
+            ValueType.TYPE_STRING -> root.stringTextColorInt
+            ValueType.TYPE_URL -> root.urlTextColorInt
+            ValueType.TYPE_NUMBER -> root.numberTextColorInt
+            ValueType.TYPE_BOOLEAN -> root.booleanTextColorInt
+            else -> root.errorTextColorInt
         }
         spanStrBuilder.clear()
         spanStrBuilder.color(valueTextColor) {
@@ -115,7 +117,7 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
                 this,
                 searchKey,
                 ignoreCase,
-                BackgroundColorSpan(container.highlightBgColorInt)
+                BackgroundColorSpan(root.highlightBgColorInt)
             )
         }
         if (viewData.getValueType() == ValueType.TYPE_URL) {
@@ -124,7 +126,7 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
             // 给url加上点击
             spanStrBuilder.setSpan(object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    container.onUrlClickListener?.onUrlClick(
+                    root.onUrlClickListener?.onUrlClick(
                         viewData.getValueStr().replace("\"", "")
                     )
                 }
@@ -145,13 +147,13 @@ internal class JsonItemView(private val container: JsonRecyclerView) :
                 spanStrBuilder,
                 childCountStr,
                 ignoreCase,
-                ForegroundColorSpan(container.numberTextColorInt)
+                ForegroundColorSpan(root.numberTextColorInt)
             )
         }
 
         if (viewData.canShowEnd()) {
             // 增加逗号
-            spanStrBuilder.color(container.defaultTextColorInt) { append(",") }
+            spanStrBuilder.color(root.defaultTextColorInt) { append(",") }
         }
         tv_value.text = spanStrBuilder
 

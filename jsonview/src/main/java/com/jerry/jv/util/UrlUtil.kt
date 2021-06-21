@@ -1,8 +1,8 @@
-package com.jerry.jv
+package com.jerry.jv.util
 
 import java.util.regex.Pattern
 
-class UrlUtil {
+internal class UrlUtil {
     companion object {
         internal val urlPattern: Pattern = Pattern.compile(
             // 验证是否是http://、https://、ftp://、rtsp://、mms://其中一个

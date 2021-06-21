@@ -1,4 +1,4 @@
-package com.jerry.jv
+package com.jerry.jv.view
 
 import android.content.Context
 import android.graphics.*
