@@ -41,3 +41,5 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 }
+
+apply from: 'https://raw.githubusercontent.com/Jerry-Mr-Xu/maven-repo/main/gradle-mvn-push.gradle'
