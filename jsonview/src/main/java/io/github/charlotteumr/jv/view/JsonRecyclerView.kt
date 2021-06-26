@@ -1,11 +1,11 @@
-package com.jerry.jv.view
+package io.github.charlotteumr.jv.view
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jerry.jv.viewmodel.JsonRecyclerAdapter
-import com.jerry.jv.JsonView
+import io.github.charlotteumr.jv.viewmodel.JsonRecyclerAdapter
+import io.github.charlotteumr.jv.JsonView
 import org.json.JSONArray
 import org.json.JSONObject
 

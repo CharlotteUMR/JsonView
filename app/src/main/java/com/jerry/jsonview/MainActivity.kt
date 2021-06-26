@@ -4,7 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import com.jerry.jv.JsonView
+import io.github.charlotteumr.jv.JsonView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {

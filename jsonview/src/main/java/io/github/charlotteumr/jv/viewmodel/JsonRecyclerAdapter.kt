@@ -1,14 +1,14 @@
-package com.jerry.jv.viewmodel
+package io.github.charlotteumr.jv.viewmodel
 
 import android.graphics.Paint
 import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jerry.jv.model.JsonItem
-import com.jerry.jv.JsonView
-import com.jerry.jv.util.UIUtil
-import com.jerry.jv.view.JsonItemView
-import com.jerry.jv.view.JsonRecyclerView
+import io.github.charlotteumr.jv.model.JsonItem
+import io.github.charlotteumr.jv.JsonView
+import io.github.charlotteumr.jv.util.UIUtil
+import io.github.charlotteumr.jv.view.JsonItemView
+import io.github.charlotteumr.jv.view.JsonRecyclerView
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -38,7 +38,9 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JsonViewHolder =
-        JsonViewHolder(JsonItemView(parent.parent.parent as JsonView))
+        JsonViewHolder(
+            JsonItemView(parent.parent.parent as JsonView)
+        )
 
     override fun getItemCount(): Int = itemList.size
 
@@ -190,14 +192,30 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
         size: Int = 1
     ) {
         // jsonArray开始
-        itemList.add(JsonItem(level, -1, size, key, jsonArray))
+        itemList.add(
+            JsonItem(
+                level,
+                -1,
+                size,
+                key,
+                jsonArray
+            )
+        )
         val arraySize = jsonArray.length()
         for (i in 0 until arraySize) {
             // 处理每一项
             handleData(jsonArray.opt(i), "", level + 1, i, arraySize)
         }
         // jsonArray结束
-        itemList.add(JsonItem(level, index, size, "", jsonArray))
+        itemList.add(
+            JsonItem(
+                level,
+                index,
+                size,
+                "",
+                jsonArray
+            )
+        )
     }
 
     /**
@@ -217,7 +235,15 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
         size: Int = 1
     ) {
         // jsonObject开始
-        itemList.add(JsonItem(level, -1, size, key, jsonObject))
+        itemList.add(
+            JsonItem(
+                level,
+                -1,
+                size,
+                key,
+                jsonObject
+            )
+        )
         var i = 0
         val jsonSize = jsonObject.length()
         jsonObject.keys().forEach {
@@ -226,7 +252,15 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
             i++
         }
         // jsonObject结束
-        itemList.add(JsonItem(level, index, size, "", jsonObject))
+        itemList.add(
+            JsonItem(
+                level,
+                index,
+                size,
+                "",
+                jsonObject
+            )
+        )
     }
 
     /**
@@ -245,7 +279,15 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
         index: Int = 0,
         size: Int = 1
     ) {
-        itemList.add(JsonItem(level, index, size, key, value))
+        itemList.add(
+            JsonItem(
+                level,
+                index,
+                size,
+                key,
+                value
+            )
+        )
     }
 
     class JsonViewHolder(val jsonItemView: JsonItemView) : RecyclerView.ViewHolder(jsonItemView)

@@ -58,7 +58,7 @@
         app:constraint_referenced_ids="tv_key,tv_joiner" />
 
     <!-- 收起展开开关 -->
-    <com.jerry.jv.view.JsonSwitcherView
+    <io.github.charlotteumr.jv.view.JsonSwitcherView
         android:id="@+id/jsv_switcher"
         android:layout_width="10dp"
         android:layout_height="10dp"

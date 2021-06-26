@@ -1,4 +1,4 @@
-package com.jerry.jv.view
+package io.github.charlotteumr.jv.view
 
 import android.annotation.SuppressLint
 import android.text.SpannableStringBuilder
@@ -15,9 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.text.color
 import androidx.recyclerview.widget.RecyclerView
-import com.jerry.jv.model.JsonItem.ValueType
-import com.jerry.jv.JsonView
-import com.jerry.jv.R
+import io.github.charlotteumr.jv.model.JsonItem.ValueType
+import io.github.charlotteumr.jv.JsonView
+import io.github.charlotteumr.jv.R
 import kotlinx.android.synthetic.main.item_json_view.view.*
 
 /**

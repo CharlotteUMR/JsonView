@@ -1,15 +1,15 @@
-package com.jerry.jv.model
+package io.github.charlotteumr.jv.model
 
 import androidx.annotation.IntDef
-import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_BOOLEAN
-import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_ARRAY
-import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_OBJECT
-import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_NUMBER
-import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_STRING
-import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_UNKNOWN
-import com.jerry.jv.model.JsonItem.ValueType.Companion.TYPE_URL
-import com.jerry.jv.util.UrlUtil
-import com.jerry.jv.view.JsonItemView
+import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_BOOLEAN
+import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_ARRAY
+import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_OBJECT
+import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_NUMBER
+import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_STRING
+import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_UNKNOWN
+import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_URL
+import io.github.charlotteumr.jv.util.UrlUtil
+import io.github.charlotteumr.jv.view.JsonItemView
 import org.json.JSONArray
 import org.json.JSONObject
 

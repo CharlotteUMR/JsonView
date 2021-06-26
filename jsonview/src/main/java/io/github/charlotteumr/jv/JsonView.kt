@@ -1,4 +1,4 @@
-package com.jerry.jv
+package io.github.charlotteumr.jv
 
 import android.content.Context
 import android.util.AttributeSet
@@ -148,7 +148,10 @@ class JsonView : ConstraintLayout {
     }
 
     init {
-        View.inflate(context, R.layout.layout_json_view, this)
+        View.inflate(
+            context,
+            R.layout.layout_json_view, this
+        )
         jrv_interface.root = this
     }
 
@@ -157,7 +160,10 @@ class JsonView : ConstraintLayout {
      */
     private fun initAttrs(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         val typedArray =
-            context.obtainStyledAttributes(attrs, R.styleable.JsonView)
+            context.obtainStyledAttributes(
+                attrs,
+                R.styleable.JsonView
+            )
         textSizePx =
             typedArray.getDimensionPixelSize(R.styleable.JsonView_jrv_text_size, textSizePx)
         levelIndent = typedArray.getInt(R.styleable.JsonView_jrv_level_indent, levelIndent)

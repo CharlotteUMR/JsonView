@@ -1,4 +1,4 @@
-package com.jerry.jv.util
+package io.github.charlotteumr.jv.util
 
 import java.util.regex.Pattern
 

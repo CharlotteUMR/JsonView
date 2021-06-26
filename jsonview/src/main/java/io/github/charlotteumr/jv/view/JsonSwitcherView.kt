@@ -1,4 +1,4 @@
-package com.jerry.jv.view
+package io.github.charlotteumr.jv.view
 
 import android.content.Context
 import android.graphics.*
