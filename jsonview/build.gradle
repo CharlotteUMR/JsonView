@@ -2,6 +2,8 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'signing'
+    id 'maven-publish'
 }
 
 android {
@@ -42,4 +44,4 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 }
 
-apply from: 'https://raw.githubusercontent.com/Jerry-Mr-Xu/maven-repo/main/gradle-mvn-push.gradle'
+//apply from: 'https://raw.githubusercontent.com/Jerry-Mr-Xu/maven-repo/main/gradle-mvn-push.gradle'
