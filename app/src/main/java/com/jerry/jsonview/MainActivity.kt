@@ -17,7 +17,7 @@ class MainActivity : Activity() {
                     "    \"string\":\"string\",\n" +
                     "    \"number\":100,\n" +
                     "    \"boolean\":true,\n" +
-                    "    \"url\":\"https://github.com/Jerry-Mr-Xu/JsonView\",\n" +
+                    "    \"url\":\"https://github.com/CharlotteUMR/JsonView\",\n" +
                     "    \"JSONObject\":{\n" +
                     "        \"string\":\"string\",\n" +
                     "        \"number\":100,\n" +

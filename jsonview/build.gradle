@@ -43,5 +43,3 @@ dependencies {
 }
 
 apply from: "${rootProject.projectDir}/jsonview/publish-maven.gradle"
-
-//apply from: 'https://raw.githubusercontent.com/Jerry-Mr-Xu/maven-repo/main/gradle-mvn-push.gradle'

@@ -84,12 +84,12 @@ uploadArchives {
                 name "jsonview" // '发布库的简单名称'
                 // optionally artifactId can be defined here
                 description "a view for displaying json" // '发布包的描述'
-                url "https://github.com/Jerry-Mr-Xu/JsonView" // '可以写公司官网地址或github个人页面地址'
+                url "https://github.com/CharlotteUMR/JsonView" // '可以写公司官网地址或github个人页面地址'
 
                 scm {
-                    connection "scm:git@github.com:Jerry-Mr-Xu/JsonView.git" // 'scm:替换成项目git地址'
-                    developerConnection "scm:git@github.com:Jerry-Mr-Xu/JsonView.git" // 'scm:替换为git开头的项目地址'
-                    url "https://github.com/Jerry-Mr-Xu/JsonView" // '项目首页，可以是github项目的主页'
+                    connection "scm:git@github.com:CharlotteUMR/JsonView.git" // 'scm:替换成项目git地址'
+                    developerConnection "scm:git@github.com:CharlotteUMR/JsonView.git" // 'scm:替换为git开头的项目地址'
+                    url "https://github.com/CharlotteUMR/JsonView" // '项目首页，可以是github项目的主页'
                 }
 
                 licenses {
