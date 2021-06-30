@@ -8,6 +8,7 @@
         android:id="@+id/hsv_scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,6 +17,7 @@
         <io.github.charlotteumr.jv.view.JsonRecyclerView
             android:id="@+id/jrv_interface"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
     </io.github.charlotteumr.jv.view.CopyAndDispatchTouchHorScrollView>
 </merge>
