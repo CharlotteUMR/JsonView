@@ -26,11 +26,11 @@ import org.json.JSONObject
  *
  * [value] jsonValue
  */
-internal data class JsonItem(
+internal class JsonItem(
     val level: Int,
     var index: Int,
-    val size: Int,
-    val key: String,
+    private val size: Int,
+    private val key: String,
     val value: Any?
 ) : JsonItemView.IViewData {
     /**
@@ -39,12 +39,18 @@ internal data class JsonItem(
     var expand: Boolean = true
 
     /**
-     * 是否隐藏（被收起的时候为true）
+     * 收起的子元素
      */
-    var hide: Boolean = false
+    private val packedChildren = arrayListOf<JsonItem>()
 
-    override fun canShow(): Boolean {
-        return hide.not()
+    fun addPackedChild(child: JsonItem) {
+        packedChildren.add(child)
+    }
+
+    fun popAllChildren(): ArrayList<JsonItem> {
+        val clone = packedChildren.toList() as ArrayList<JsonItem>
+        packedChildren.clear()
+        return clone
     }
 
     override fun getIndentLevel(): Int = level
@@ -86,7 +92,7 @@ internal data class JsonItem(
         }
     }
 
-    override fun canShowEnd(): Boolean = (index >= 0) and (index < size - 1)
+    override fun canShowConnector(): Boolean = (index >= 0) and (index < size - 1)
 
     /**
      * value类型

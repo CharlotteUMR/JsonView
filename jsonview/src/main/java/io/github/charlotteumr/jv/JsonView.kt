@@ -165,34 +165,34 @@ class JsonView : ConstraintLayout {
                 R.styleable.JsonView
             )
         textSizePx =
-            typedArray.getDimensionPixelSize(R.styleable.JsonView_jrv_text_size, textSizePx)
-        levelIndent = typedArray.getInt(R.styleable.JsonView_jrv_level_indent, levelIndent)
+            typedArray.getDimensionPixelSize(R.styleable.JsonView_jv_text_size, textSizePx)
+        levelIndent = typedArray.getInt(R.styleable.JsonView_jv_level_indent, levelIndent)
         defaultTextColorInt = typedArray.getColor(
-            R.styleable.JsonView_jrv_default_text_color,
+            R.styleable.JsonView_jv_default_text_color,
             defaultTextColorInt
         )
         keyTextColorInt =
-            typedArray.getColor(R.styleable.JsonView_jrv_key_text_color, keyTextColorInt)
+            typedArray.getColor(R.styleable.JsonView_jv_key_text_color, keyTextColorInt)
         stringTextColorInt = typedArray.getColor(
-            R.styleable.JsonView_jrv_string_text_color,
+            R.styleable.JsonView_jv_string_text_color,
             stringTextColorInt
         )
         urlTextColorInt =
-            typedArray.getColor(R.styleable.JsonView_jrv_url_text_color, urlTextColorInt)
+            typedArray.getColor(R.styleable.JsonView_jv_url_text_color, urlTextColorInt)
         numberTextColorInt = typedArray.getColor(
-            R.styleable.JsonView_jrv_number_text_color,
+            R.styleable.JsonView_jv_number_text_color,
             numberTextColorInt
         )
         booleanTextColorInt = typedArray.getColor(
-            R.styleable.JsonView_jrv_boolean_text_color,
+            R.styleable.JsonView_jv_boolean_text_color,
             booleanTextColorInt
         )
         errorTextColorInt = typedArray.getColor(
-            R.styleable.JsonView_jrv_error_text_color,
+            R.styleable.JsonView_jv_error_text_color,
             errorTextColorInt
         )
         highlightBgColorInt = typedArray.getColor(
-            R.styleable.JsonView_jrv_highlight_bg_color,
+            R.styleable.JsonView_jv_highlight_bg_color,
             highlightBgColorInt
         )
         typedArray.recycle()

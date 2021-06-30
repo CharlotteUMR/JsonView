@@ -52,38 +52,32 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                 // 如果可以展示开关
                 if (curItem.expand) {
                     // 如果之前是展开的则收起
-                    // 将这个item下的所有item都隐藏
+                    // 将这个item下的所有item都收起
+                    val needRemoveItem = arrayListOf<JsonItem>()
                     var i = position + 1
                     while (itemList[i].value != curItem.value) {
-                        itemList[i].hide = true
+                        // 放到当前item的收起列表里
+                        curItem.addPackedChild(itemList[i])
+                        // 准备将这些item移除
+                        needRemoveItem.add(itemList[i])
                         i++
                     }
-                    // 将这个item的结尾隐藏
-                    itemList[i].hide = true
-                    // 将这个item的开头变为收起态（这里保留开头的原因是结尾没有key）
+                    // 将这个item的结尾也收起
+                    curItem.addPackedChild(itemList[i])
+                    needRemoveItem.add(itemList[i])
+
+                    // 将这个item的开头变为收起态（这里保留开头而不是保留结尾的原因是结尾没有key）
                     curItem.index = itemList[i].index
                     curItem.expand = false
+
+                    // 将需要移除的item移除
+                    itemList.removeAll(needRemoveItem)
                 } else {
                     // 如果之前是收起的则展开
-                    // 将这个item下所有未收起的item都显示
-                    var i = position + 1
-                    var keepHideValue: Any? = null
-                    while (itemList[i].value != curItem.value) {
-                        val item = itemList[i]
-                        if (keepHideValue == null) {
-                            if (item.canShowSwitcher() && item.expand.not()) {
-                                // 如果item有开关且处于收起状态，则其下所有item保持隐藏
-                                keepHideValue = item.value
-                            }
-                            item.hide = false
-                        } else if (item.value == keepHideValue) {
-                            // 保持隐藏结束
-                            keepHideValue = null
-                        }
-                        i++
-                    }
-                    // 将这个item的结尾显示
-                    itemList[i].hide = false
+                    // 将之前收起的item都拿出来
+                    val packedChildren = curItem.popAllChildren()
+                    itemList.addAll(position + 1, packedChildren)
+
                     // 将这个item的开头变为展开态
                     curItem.index = -1
                     curItem.expand = true

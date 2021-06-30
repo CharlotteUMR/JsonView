@@ -2,24 +2,24 @@
 <resources>
     <declare-styleable name="JsonView">
         <!-- 整体文字大小 -->
-        <attr name="jrv_text_size" format="dimension" />
+        <attr name="jv_text_size" format="dimension" />
         <!-- 层级缩进 -->
-        <attr name="jrv_level_indent" format="integer" />
+        <attr name="jv_level_indent" format="integer" />
         <!-- 默认文字颜色 -->
-        <attr name="jrv_default_text_color" format="color" />
+        <attr name="jv_default_text_color" format="color" />
         <!-- jsonKey文字颜色 -->
-        <attr name="jrv_key_text_color" format="color" />
+        <attr name="jv_key_text_color" format="color" />
         <!-- jsonValue如果为String时文字颜色 -->
-        <attr name="jrv_string_text_color" format="color" />
+        <attr name="jv_string_text_color" format="color" />
         <!-- jsonValue如果为Url时文字颜色 -->
-        <attr name="jrv_url_text_color" format="color" />
+        <attr name="jv_url_text_color" format="color" />
         <!-- jsonValue如果为数字时文字颜色 -->
-        <attr name="jrv_number_text_color" format="color" />
+        <attr name="jv_number_text_color" format="color" />
         <!-- jsonValue如果为Boolean时文字颜色 -->
-        <attr name="jrv_boolean_text_color" format="color" />
+        <attr name="jv_boolean_text_color" format="color" />
         <!-- jsonValue如果为异常情况时文字颜色 -->
-        <attr name="jrv_error_text_color" format="color" />
+        <attr name="jv_error_text_color" format="color" />
         <!-- 搜索高亮背景色 -->
-        <attr name="jrv_highlight_bg_color" format="color" />
+        <attr name="jv_highlight_bg_color" format="color" />
     </declare-styleable>
 </resources>

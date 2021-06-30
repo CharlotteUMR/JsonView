@@ -2,8 +2,8 @@
 <resources>
 
     <style name="JRV">
-        <item name="jrv_text_size">15sp</item>
-        <item name="jrv_default_text_color">#000</item>
-        <item name="jrv_level_indent">10</item>
+        <item name="jv_text_size">15sp</item>
+        <item name="jv_default_text_color">#000</item>
+        <item name="jv_level_indent">10</item>
     </style>
 </resources>

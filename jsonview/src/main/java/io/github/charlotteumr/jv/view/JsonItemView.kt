@@ -44,17 +44,6 @@ internal class JsonItemView(private val root: JsonView) :
     }
 
     fun setViewData(viewData: IViewData) {
-        if (viewData.canShow().not()) {
-            layoutParams = RecyclerView.LayoutParams(0, 0)
-            visibility = GONE
-            return
-        }
-        layoutParams = RecyclerView.LayoutParams(
-            RecyclerView.LayoutParams.MATCH_PARENT,
-            RecyclerView.LayoutParams.WRAP_CONTENT
-        )
-        visibility = VISIBLE
-
         val textSizeFloat = root.textSizePx.toFloat()
         val searchKey =
             root.searchParam?.searchKey?.let { if (it.isNotBlank()) it else null }
@@ -151,7 +140,7 @@ internal class JsonItemView(private val root: JsonView) :
             )
         }
 
-        if (viewData.canShowEnd()) {
+        if (viewData.canShowConnector()) {
             // 增加逗号
             spanStrBuilder.color(root.defaultTextColorInt) { append(",") }
         }
@@ -195,7 +184,6 @@ internal class JsonItemView(private val root: JsonView) :
     }
 
     interface IViewData {
-        fun canShow(): Boolean
         fun getIndentLevel(): Int
         fun getKeyStr(): String
         fun canShowSwitcher(): Boolean
@@ -205,6 +193,6 @@ internal class JsonItemView(private val root: JsonView) :
         fun getValueType(): Int
         fun getValueStr(): String
         fun getChildCount(): Int
-        fun canShowEnd(): Boolean
+        fun canShowConnector(): Boolean
     }
 }
