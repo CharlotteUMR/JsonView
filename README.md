@@ -94,3 +94,5 @@ interface OnUrlClickListener {
 ```
 
 ## 示例
+
+![](https://github.com/CharlotteUMR/JsonView/blob/version_1.X/example/JsonViewExample.gif?raw=true)
