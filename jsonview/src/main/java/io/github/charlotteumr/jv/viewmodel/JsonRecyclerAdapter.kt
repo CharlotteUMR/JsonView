@@ -3,6 +3,7 @@ package io.github.charlotteumr.jv.viewmodel
 import android.graphics.Paint
 import android.util.Log
 import android.view.ViewGroup
+import androidx.core.util.Predicate
 import androidx.recyclerview.widget.RecyclerView
 import io.github.charlotteumr.jv.model.JsonItem
 import io.github.charlotteumr.jv.JsonView
@@ -18,10 +19,11 @@ import org.json.JSONTokener
  *
  * @author Jerry
  */
-internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.JsonViewHolder>() {
+internal class JsonRecyclerAdapter() : RecyclerView.Adapter<JsonRecyclerAdapter.JsonViewHolder>() {
     companion object {
         private const val TAG = "JsonRecyclerAdapter"
     }
+    lateinit var extraUrlChecker: Predicate<String>
 
     private val itemList = arrayListOf<JsonItem>()
     private var jsonRecyclerView: JsonRecyclerView? = null
@@ -192,7 +194,8 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                 -1,
                 size,
                 key,
-                jsonArray
+                jsonArray,
+                extraUrlChecker
             )
         )
         val arraySize = jsonArray.length()
@@ -207,7 +210,8 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                 index,
                 size,
                 "",
-                jsonArray
+                jsonArray,
+                extraUrlChecker
             )
         )
     }
@@ -235,7 +239,8 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                 -1,
                 size,
                 key,
-                jsonObject
+                jsonObject,
+                extraUrlChecker
             )
         )
         var i = 0
@@ -252,7 +257,8 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                 index,
                 size,
                 "",
-                jsonObject
+                jsonObject,
+                extraUrlChecker
             )
         )
     }
@@ -279,7 +285,8 @@ internal class JsonRecyclerAdapter : RecyclerView.Adapter<JsonRecyclerAdapter.Js
                 index,
                 size,
                 key,
-                value
+                value,
+                extraUrlChecker
             )
         )
     }

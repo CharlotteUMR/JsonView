@@ -1,6 +1,7 @@
 package io.github.charlotteumr.jv.model
 
 import androidx.annotation.IntDef
+import androidx.core.util.Predicate
 import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_BOOLEAN
 import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_ARRAY
 import io.github.charlotteumr.jv.model.JsonItem.ValueType.Companion.TYPE_JSON_OBJECT
@@ -25,13 +26,16 @@ import org.json.JSONObject
  * [key] jsonKey
  *
  * [value] jsonValue
+ *
+ * [extraUrlChecker] 额外的url检查器
  */
 internal class JsonItem(
     val level: Int,
     var index: Int,
     private val size: Int,
     private val key: String,
-    val value: Any?
+    val value: Any?,
+    private val extraUrlChecker: Predicate<String>
 ) : JsonItemView.IViewData {
     /**
      * 是否展开
@@ -66,8 +70,8 @@ internal class JsonItem(
         return when (value) {
             is JSONObject -> TYPE_JSON_OBJECT
             is JSONArray -> TYPE_JSON_ARRAY
-            is String -> if (UrlUtil.urlPattern.matcher(value)
-                    .matches()
+            is String -> if (UrlUtil.urlPattern.matcher(value).matches()
+                or (extraUrlChecker.test(value))
             ) TYPE_URL else TYPE_STRING
             is Number -> TYPE_NUMBER
             is Boolean -> TYPE_BOOLEAN

@@ -12,6 +12,11 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        jv_test.extraUrlChecker = object : JsonView.ExtraUrlChecker {
+            override fun isUrl(url: String): Boolean {
+                return url == "string"
+            }
+        }
         jv_test.setData(
             "{\n" +
                     "    \"string\":\"string\",\n" +

@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.util.Predicate
 import kotlinx.android.synthetic.main.layout_json_view.view.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -139,6 +140,18 @@ class JsonView : ConstraintLayout {
     var onUrlClickListener: OnUrlClickListener? = null
 
     /**
+     * 额外url检查器
+     */
+    var extraUrlChecker: ExtraUrlChecker? = null
+        set(value) {
+            field = value
+            jrv_interface.notifyDataSetChanged()
+        }
+
+    private var extraUrlCheckerPredicate =
+        Predicate<String> { extraUrlChecker?.isUrl(it) ?: false }
+
+    /**
      * 填充数据源
      *
      * [JSONObject]或[JSONArray]或[String]类型
@@ -153,6 +166,7 @@ class JsonView : ConstraintLayout {
             R.layout.layout_json_view, this
         )
         jrv_interface.root = this
+        jrv_interface.setExtraUrlChecker(extraUrlCheckerPredicate)
     }
 
     /**
@@ -217,5 +231,15 @@ class JsonView : ConstraintLayout {
          * @param url 点击的url
          */
         fun onUrlClick(url: String)
+    }
+
+    /**
+     * 额外的url检查器
+     */
+    interface ExtraUrlChecker {
+        /**
+         * 是否为url
+         */
+        fun isUrl(url: String): Boolean
     }
 }

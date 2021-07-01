@@ -2,6 +2,7 @@ package io.github.charlotteumr.jv.view
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.core.util.Predicate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.charlotteumr.jv.viewmodel.JsonRecyclerAdapter
@@ -33,6 +34,10 @@ internal class JsonRecyclerView : RecyclerView {
     init {
         layoutManager = LinearLayoutManager(context)
         setAdapter(adapter)
+    }
+
+    fun setExtraUrlChecker(extraUrlChecker: Predicate<String>) {
+        adapter.extraUrlChecker = extraUrlChecker
     }
 
     fun notifyDataSetChanged() {
